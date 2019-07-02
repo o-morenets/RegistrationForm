@@ -29,7 +29,7 @@ public class LoginFormController {
         log.info("{}", userLoginDTO);
         log.info("{}", user);
         if (user == null) {
-            throw new RuntimeException("Access denied!");
+            throw new RuntimeException("Wrong login or password");
         }
     }
 
@@ -42,6 +42,6 @@ public class LoginFormController {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity handleRuntimeException(RuntimeException ex) {
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(ex);
     }
 }

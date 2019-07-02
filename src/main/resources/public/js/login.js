@@ -14,13 +14,13 @@ angular.module("login_form", [])
             }).then(
                 (data) => {
                     resultMessageLabel.style.color = 'green';
-                    $scope.message = "Доступ разрешен";
+                    $scope.message = "Access granted";
                     inputEmailEl.value = '';
                     inputPasswordEl.value = '';
                 },
                 (error) => {
                     resultMessageLabel.style.color = 'red';
-                    $scope.message = "Доступ запрещен";
+                    $scope.message = error.data.message;
                     inputEmailEl.value = '';
                     inputPasswordEl.value = '';
                 }

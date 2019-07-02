@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.testing.demo_jpa.dto.UserSignupDTO;
 import ua.testing.demo_jpa.entity.RoleType;
 import ua.testing.demo_jpa.entity.User;
+import ua.testing.demo_jpa.exception.NotUniqueLoginException;
 import ua.testing.demo_jpa.service.UserService;
 
 @Slf4j
@@ -31,18 +32,14 @@ public class RegFormController {
                 .email(userSignupDTO.getEmail())
                 .role(RoleType.ROLE_USER)
                 .build();
-        try {
-            userService.saveNewUser(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Email already exists!");
-        }
+
+        userService.saveNewUser(user);
         log.info("{}", userSignupDTO);
         log.info("{}", user);
-
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity handleRuntimeException(RuntimeException ex) {
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(ex);
     }
 }

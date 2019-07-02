@@ -14,14 +14,14 @@ angular.module("registration_form", [])
             }).then(
                 function(data) {
                     resultMessageLabel.style.color = 'green';
-                    $scope.message = 'Успешно зарегистрирован';
+                    $scope.message = 'Registered successfully';
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
                 },
                 function(error) {
                     resultMessageLabel.style.color = 'red';
-                    $scope.message = 'При регистрации произошла ошибка';
+                    $scope.message = error.data.message;
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
