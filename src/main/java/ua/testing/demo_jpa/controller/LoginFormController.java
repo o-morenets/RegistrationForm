@@ -3,10 +3,8 @@ package ua.testing.demo_jpa.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ua.testing.demo_jpa.dto.UserLoginDTO;
 import ua.testing.demo_jpa.dto.UsersDTO;
 import ua.testing.demo_jpa.entity.User;
@@ -30,14 +28,9 @@ public class LoginFormController {
         User user = userService.findByEmail(userLoginDTO);
         log.info("{}", userLoginDTO);
         log.info("{}", user);
-
-        /*       userService.saveNewUser(User.builder()
-                .firstName("Ann")
-                .lastName("Reizer")
-                .email("AnnReizer@testing.ua")
-                .role(RoleType.ROLE_USER)
-                .build());
-        */
+        if (user == null) {
+            throw new RuntimeException("Access denied!");
+        }
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -45,5 +38,10 @@ public class LoginFormController {
         UsersDTO allUsers = userService.getAllUsers();
         log.info("{}", allUsers);
         return allUsers;
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

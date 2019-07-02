@@ -29,10 +29,6 @@ public class UserService {
 
     public void saveNewUser(User user) {
         //TODO inform the user about the replay email
-        try {
-            userRepository.save(user);
-        } catch (Exception ex) {
-            log.info("{Почтовый адрес уже существует}");
-        }
+        userRepository.save(user);
     }
 }

@@ -1,7 +1,7 @@
 angular.module("registration_form", [])
     .controller("AppCtrl", function ($scope, $http) {
         $scope.auth = {};
-        let resultMessageEl = document.getElementById('resultMessage');
+        let resultMessageLabel = document.getElementById('resultMessage');
         let inputFirstNameEl = document.getElementById('inputFirstName');
         let inputLastNameEl = document.getElementById('inputLastName');
         let inputEmailEl = document.getElementById('inputEmail');
@@ -12,19 +12,19 @@ angular.module("registration_form", [])
                 data: $.param(auth),
                 headers: {"Content-Type": "application/x-www-form-urlencoded"}
             }).then(
-                (data) => {
-                    resultMessageEl.style.color = 'green';
+                function(data) {
+                    resultMessageLabel.style.color = 'green';
                     $scope.message = 'Успешно зарегистрирован';
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
                 },
-                (error) => {
-                    resultMessageEl.style.color = 'red';
+                function(error) {
+                    resultMessageLabel.style.color = 'red';
+                    $scope.message = 'При регистрации произошла ошибка';
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
-                    $scope.message = 'При регистрации произошла ошибка';
                 }
             );
         }

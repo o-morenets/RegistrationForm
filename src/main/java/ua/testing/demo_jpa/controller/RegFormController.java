@@ -31,9 +31,14 @@ public class RegFormController {
                 .email(userSignupDTO.getEmail())
                 .role(RoleType.ROLE_USER)
                 .build();
-        userService.saveNewUser(user);
+        try {
+            userService.saveNewUser(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Email already exists!");
+        }
         log.info("{}", userSignupDTO);
         log.info("{}", user);
+
     }
 
     @ExceptionHandler(RuntimeException.class)

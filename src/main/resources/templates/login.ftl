@@ -19,19 +19,19 @@
             <h1 class="page-header">Login Demo</h1>
             <form style="margin-bottom: 30px" name="form" autocomplete="off" novalidate ng-submit="form.$valid && sendForm(auth)">
                 <div class="form-group">
-                    <label id="exampleInputEmailLabel" for="exampleInputEmail1">Email address</label>
+                    <label id="inputEmailLabel" for="inputEmailEl">Email address</label>
                     <input type="email"
                            class="form-control"
-                           id="exampleInputEmail1"
+                           id="inputEmailEl"
                            placeholder="Email"
                            required
                            ng-model="auth.email">
                 </div>
                 <div class="form-group">
-                    <label id="exampleInputPasswordLabel" class="control-label" for="exampleInputPassword1">Password</label>
+                    <label id="inputPasswordLabel" class="control-label" for="inputPasswordEl">Password</label>
                     <input type="password"
                            class="form-control"
-                           id="exampleInputPassword1"
+                           id="inputPasswordEl"
                            placeholder="Password"
                            required
                            ng-model="auth.password">
