@@ -5,6 +5,8 @@ angular.module("registration_form", [])
         let inputFirstNameEl = document.getElementById('inputFirstName');
         let inputLastNameEl = document.getElementById('inputLastName');
         let inputEmailEl = document.getElementById('inputEmail');
+        let buttonSubmit = document.getElementById('btnSubmit');
+
         inputEmailEl.addEventListener('input', () => {
             inputEmailEl.style.color = 'black';
         });
@@ -22,15 +24,17 @@ angular.module("registration_form", [])
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
+                    buttonSubmit.disabled = 'true';
                 },
                 function(error) {
                     resultMessageLabel.style.color = 'red';
                     $scope.message = error.data.message;
                     $log.info(error);
-                    inputFirstNameEl.value = error.data.user.firstName;
-                    inputLastNameEl.value = error.data.user.lastName;
+                    inputFirstNameEl.value = error.data.userSignupDTO.firstName;
+                    inputLastNameEl.value = error.data.userSignupDTO.lastName;
                     inputEmailEl.style.color = 'red';
-                    inputEmailEl.value = error.data.user.email;
+                    inputEmailEl.value = error.data.userSignupDTO.email;
+                    buttonSubmit.disabled = 'true';
                 }
             );
         }

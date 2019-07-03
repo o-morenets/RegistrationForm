@@ -26,16 +26,8 @@ public class RegFormController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/reg_form", method = RequestMethod.POST)
     public void registrationFormController(UserSignupDTO userSignupDTO) {
-        User user = User.builder()
-                .firstName(userSignupDTO.getFirstName())
-                .lastName(userSignupDTO.getLastName())
-                .email(userSignupDTO.getEmail())
-                .role(RoleType.ROLE_USER)
-                .build();
-
-        userService.saveNewUser(user);
+        userService.saveNewUser(userSignupDTO);
         log.info("{}", userSignupDTO);
-        log.info("{}", user);
     }
 
     @ExceptionHandler(RuntimeException.class)

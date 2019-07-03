@@ -36,7 +36,7 @@
                            required
                            ng-model="auth.password">
                 </div>
-                <button type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
+                <button id="btnSubmit" type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
                     Log in
                 </button>
             </form>

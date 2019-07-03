@@ -10,6 +10,8 @@ import ua.testing.demo_jpa.dto.UsersDTO;
 import ua.testing.demo_jpa.entity.User;
 import ua.testing.demo_jpa.service.UserService;
 
+import java.util.Optional;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/")
@@ -25,12 +27,9 @@ public class LoginFormController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void loginFormController(UserLoginDTO userLoginDTO) {
-        User user = userService.findByEmail(userLoginDTO);
-        log.info("{}", userLoginDTO);
-        log.info("{}", user);
-        if (user == null) {
-            throw new RuntimeException("Wrong login/password");
-        }
+        LoginFormController.log.info("{}", userLoginDTO);
+        Optional<User> user = userService.login(userLoginDTO);
+        LoginFormController.log.info("{}", user);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)

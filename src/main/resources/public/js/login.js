@@ -4,6 +4,11 @@ angular.module("login_form", [])
         let resultMessageLabel = document.getElementById('resultMessage');
         let inputEmailEl = document.getElementById('inputEmailEl');
         let inputPasswordEl = document.getElementById('inputPasswordEl');
+        let buttonSubmit = document.getElementById('btnSubmit');
+
+        inputEmailEl.addEventListener('input', () => {
+            inputEmailEl.style.color = 'black';
+        });
 
         $scope.sendForm = function (auth) {
             $http({
@@ -17,12 +22,15 @@ angular.module("login_form", [])
                     $scope.message = "Access granted";
                     inputEmailEl.value = '';
                     inputPasswordEl.value = '';
+                    buttonSubmit.disabled = 'true';
                 },
                 (error) => {
                     resultMessageLabel.style.color = 'red';
                     $scope.message = error.data.message;
-                    inputEmailEl.value = '';
+                    inputEmailEl.style.color = 'red';
+                    inputEmailEl.value = error.data.userLoginDTO.email;
                     inputPasswordEl.value = '';
+                    buttonSubmit.disabled = 'true';
                 }
             );
         }
