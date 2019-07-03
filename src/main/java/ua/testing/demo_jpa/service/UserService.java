@@ -3,7 +3,6 @@ package ua.testing.demo_jpa.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.stereotype.Service;
-import ua.testing.demo_jpa.controller.LoginFormController;
 import ua.testing.demo_jpa.dto.UserLoginDTO;
 import ua.testing.demo_jpa.dto.UserSignupDTO;
 import ua.testing.demo_jpa.dto.UsersDTO;
@@ -34,7 +33,7 @@ public class UserService {
         return new UsersDTO(userRepository.findAll());
     }
 
-    public User findByEmail(UserLoginDTO userLoginDTO) {
+    private User findByEmail(UserLoginDTO userLoginDTO) {
         return userRepository.findByEmail(userLoginDTO.getEmail());
     }
 
