@@ -12,7 +12,7 @@ angular.module("login_form", [])
                 data: $.param(auth),
                 headers: {"Content-Type": "application/x-www-form-urlencoded"}
             }).then(
-                (data) => {
+                (response) => {
                     resultMessageLabel.style.color = 'green';
                     $scope.message = "Access granted";
                     inputEmailEl.value = '';

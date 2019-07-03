@@ -1,17 +1,17 @@
-angular.module("users_form",[])
+angular.module("users_form", [])
     .controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
         console.log("userCtrl");
         $scope.users = [];
-        $scope.getUsers = function(){
+        $scope.getUsers = function () {
             $http({
                 method: "GET",
                 url: "/users",
-                headers: { "Content-Type" : "application/json" }
+                headers: {"Content-Type": "application/json"}
             }).then(
-                function(data) {
-                    $scope.users = data.data.users;
+                function (response) {
+                    $scope.users = response.data.users;
                 },
-                function(error) {
+                function (error) {
                     console.log("userCtrl error")
                 }
             );

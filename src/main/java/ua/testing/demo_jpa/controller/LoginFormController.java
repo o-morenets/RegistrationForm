@@ -29,7 +29,7 @@ public class LoginFormController {
         log.info("{}", userLoginDTO);
         log.info("{}", user);
         if (user == null) {
-            throw new RuntimeException("Wrong login or password");
+            throw new RuntimeException("Wrong login/password");
         }
     }
 

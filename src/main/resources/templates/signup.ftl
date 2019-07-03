@@ -47,7 +47,7 @@
                            ng-model="auth.email">
                 </div>
                 <button type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
-                    Submit
+                    Sign Up
                 </button>
             </form>
         </div>
