@@ -27,9 +27,12 @@ public class LoginFormController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void loginFormController(UserLoginDTO userLoginDTO) {
-        LoginFormController.log.info("{}", userLoginDTO);
+        log.info("{}", userLoginDTO);
+
+        // TODO validate DTO -> return to frontEnd when error
+
         Optional<User> user = userService.login(userLoginDTO);
-        LoginFormController.log.info("{}", user);
+        log.info("{}", "Logined user: " + user);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)

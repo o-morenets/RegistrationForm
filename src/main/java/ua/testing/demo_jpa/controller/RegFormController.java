@@ -6,9 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.testing.demo_jpa.dto.UserSignupDTO;
-import ua.testing.demo_jpa.entity.RoleType;
-import ua.testing.demo_jpa.entity.User;
-import ua.testing.demo_jpa.exception.NotUniqueLoginException;
 import ua.testing.demo_jpa.service.UserService;
 
 @Slf4j
@@ -26,6 +23,9 @@ public class RegFormController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/reg_form", method = RequestMethod.POST)
     public void registrationFormController(UserSignupDTO userSignupDTO) {
+
+        // TODO validate DTO -> return to frontEnd when error
+
         userService.saveNewUser(userSignupDTO);
         log.info("{}", userSignupDTO);
     }

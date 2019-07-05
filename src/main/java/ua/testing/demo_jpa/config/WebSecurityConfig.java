@@ -18,71 +18,82 @@ import ua.testing.demo_jpa.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
-	@Autowired
-	private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		return bCryptPasswordEncoder;
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		/*
+		 Setting Service to find User in the database.
+		 And Setting PasswordEncoder
+		*/
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
 
-		// Setting Service to find User in the database.
-		// And Setting PassswordEncoder
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-	}
+        http.csrf().disable();
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+        /* The pages does not require login */
+        http.authorizeRequests()
+                .antMatchers("/", "/login", "/signup").permitAll();
 
-		http.csrf().disable();
+		/*
+		 /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
+		 If no login, it will redirect to /login page.
+		*/
+        http.authorizeRequests()
+                .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
-		// The pages does not require login
-		http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
+        /* For ADMIN only. */
+        http.authorizeRequests()
+                .antMatchers("/allUsers").access("hasRole('ROLE_ADMIN')");
 
-		// /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
-		// If no login, it will redirect to /login page.
-		http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+		/*
+		 When the user has logged in as XX.
+		 But access a page that requires role YY,
+		 AccessDeniedException will be thrown.
+		*/
+        http.authorizeRequests()
+                .and().exceptionHandling().accessDeniedPage("/403");
 
-		// For ADMIN only.
-		http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");
+        /* Config for Login Form */
+        http.authorizeRequests()
+                .and().formLogin()
 
-		// When the user has logged in as XX.
-		// But access a page that requires role YY,
-		// AccessDeniedException will be thrown.
-		http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
+                // Submit URL of login page.
+                .loginProcessingUrl("/j_spring_security_check") // Submit URL
+//                .loginPage("/login")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")
+                .passwordParameter("password")
 
-		// Config for Login Form
-		http.authorizeRequests().and().formLogin()//
-				// Submit URL of login page.
-				.loginProcessingUrl("/j_spring_security_check") // Submit URL
-				.loginPage("/login")//
-				.defaultSuccessUrl("/userAccountInfo")//
-				.failureUrl("/login?error=true")//
-				.usernameParameter("username")//
-				.passwordParameter("password")
-				// Config for Logout Page
-				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                // Config for Logout Page
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
 
-		// Config Remember Me.
-		http.authorizeRequests().and() //
-				.rememberMe().tokenRepository(this.persistentTokenRepository()) //
-				.tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
+        /* Config Remember Me. */
+        http.authorizeRequests().and()
+                .rememberMe().tokenRepository(this.persistentTokenRepository())
+                .tokenValiditySeconds(5 * 60); // 5 min
+    }
 
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public PersistentTokenRepository persistentTokenRepository() {
-		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-		db.setDataSource(dataSource);
-		return db;
-	}
-
+    // Token stored in Table (Persistent_Logins)
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+        return db;
+    }
 }

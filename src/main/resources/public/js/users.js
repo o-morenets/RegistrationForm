@@ -1,7 +1,7 @@
 angular.module("users_form", [])
     .controller("UserCtrl", ["$scope", "$http", function ($scope, $http) {
-        console.log("userCtrl");
         $scope.users = [];
+
         $scope.getUsers = function () {
             $http({
                 method: "GET",

@@ -8,16 +8,19 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 </head>
+
 <body ng-app="login_form" ng-controller="AppCtrl">
-<div class="col-md-8 col-md-offset-2">
-    <h1>Login form's Main</h1>
-</div>
+
+<!-- Include _menu.ftl -->
+<#include "_menu.ftl">
+
 <div class="container" style="margin-top: 60px">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <h3 id="resultMessage">{{message}}</h3>
             <h1 class="page-header">Login Demo</h1>
             <form style="margin-bottom: 30px" name="form" autocomplete="off" novalidate ng-submit="form.$valid && sendForm(auth)">
+
                 <div class="form-group">
                     <label id="inputEmailLabel" for="inputEmailEl">Email address</label>
                     <input type="email"
@@ -25,7 +28,7 @@
                            id="inputEmailEl"
                            placeholder="Email"
                            required
-                           ng-model="auth.email">
+                           ng-model="auth.usrname">
                 </div>
                 <div class="form-group">
                     <label id="inputPasswordLabel" class="control-label" for="inputPasswordEl">Password</label>

@@ -1,56 +1,54 @@
 package ua.testing.demo_jpa.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.testing.demo_jpa.dao.AppRoleDAO;
-import ua.testing.demo_jpa.dao.AppUserDAO;
-import ua.testing.demo_jpa.entity.AppUser;
+import ua.testing.demo_jpa.entity.User;
+import ua.testing.demo_jpa.persistence.RoleDAO;
+import ua.testing.demo_jpa.persistence.UserDAO;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	@Autowired
-	private AppUserDAO appUserDAO;
+    @Autowired
+    private UserDAO userDAO;
 
-	@Autowired
-	private AppRoleDAO appRoleDAO;
+    @Autowired
+    private RoleDAO roleDAO;
 
-	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		AppUser appUser = this.appUserDAO.findUserAccount(userName);
+    @Override
+    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
+        Optional<User> userOptional = this.userDAO.findByEmail(username);
 
-		if (appUser == null) {
-			System.out.println("User not found! " + userName);
-			throw new UsernameNotFoundException("User " + userName + " was not found in the database");
-		}
+        if (!userOptional.isPresent()) {
+            log.warn("User not found! " + username);
+            throw new UsernameNotFoundException("User " + username + " was not found in the database");
+        }
 
-		System.out.println("Found User: " + appUser);
+        User user = userOptional.get();
 
-		// [ROLE_USER, ROLE_ADMIN,..]
-		List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
+        log.info("Found User: " + user);
 
-		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-		if (roleNames != null) {
-			for (String role : roleNames) {
-				// ROLE_USER, ROLE_ADMIN,..
-				GrantedAuthority authority = new SimpleGrantedAuthority(role);
-				grantList.add(authority);
-			}
-		}
+        // [ROLE_USER, ROLE_ADMIN,..]
+        List<String> roleNames = this.roleDAO.getRoleNames(user.getUserId());
 
-		UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), //
-				appUser.getEncrytedPassword(), grantList);
+        List<GrantedAuthority> grantList = roleNames.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-		return userDetails;
-	}
-
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), grantList
+        );
+    }
 }

@@ -9,7 +9,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 </head>
+
 <body ng-app="registration_form" ng-controller="AppCtrl">
+
+<!-- Include _menu.ftl -->
+<#include "_menu.ftl">
+
 <div class="col-md-8 col-md-offset-2">
     <h1>Registration form's Main</h1>
 </div>
@@ -44,7 +49,16 @@
                            id="inputEmail"
                            placeholder="Email"
                            required
-                           ng-model="auth.email">
+                           ng-model="auth.username">
+                </div>
+                <div class="form-group">
+                    <label id="inputPasswordLabel" class="control-label" for="inputPassword">Password</label>
+                    <input type="password"
+                           class="form-control"
+                           id="inputPassword"
+                           placeholder="Password"
+                           required
+                           ng-model="auth.password">
                 </div>
                 <button id="btnSubmit" type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
                     Sign Up

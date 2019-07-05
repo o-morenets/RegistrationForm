@@ -2,13 +2,12 @@ package ua.testing.demo_jpa.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
 public class UserLoginDTO {
-    private String email;
+    private String username;
     private String password;
 }
+

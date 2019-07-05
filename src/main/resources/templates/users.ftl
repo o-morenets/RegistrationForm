@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body ng-app="users_form" ng-controller="UserCtrl" data-ng-init="getUsers()">
+
+<!-- Include _menu.ftl -->
+<#include "_menu.ftl">
 
 <div class="container" style="margin-top: 30px">
     <div class="row">
@@ -30,7 +34,7 @@
                             <td>{{u.id}}</td>
                             <td>{{u.firstName}}</td>
                             <td>{{u.lastName}}</td>
-                            <td>{{u.email}}</td>
+                            <td>{{u.username}}</td>
                             <td>{{u.role}}</td>
                         </tr>
                         </tbody>

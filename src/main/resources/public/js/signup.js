@@ -5,6 +5,7 @@ angular.module("registration_form", [])
         let inputFirstNameEl = document.getElementById('inputFirstName');
         let inputLastNameEl = document.getElementById('inputLastName');
         let inputEmailEl = document.getElementById('inputEmail');
+        let inputPasswordEl = document.getElementById('inputPassword');
         let buttonSubmit = document.getElementById('btnSubmit');
 
         inputEmailEl.addEventListener('input', () => {
@@ -24,6 +25,7 @@ angular.module("registration_form", [])
                     inputFirstNameEl.value = '';
                     inputLastNameEl.value = '';
                     inputEmailEl.value = '';
+                    inputPasswordEl.value = '';
                     buttonSubmit.disabled = 'true';
                 },
                 function(error) {
@@ -33,7 +35,8 @@ angular.module("registration_form", [])
                     inputFirstNameEl.value = error.data.userSignupDTO.firstName;
                     inputLastNameEl.value = error.data.userSignupDTO.lastName;
                     inputEmailEl.style.color = 'red';
-                    inputEmailEl.value = error.data.userSignupDTO.email;
+                    inputEmailEl.value = error.data.userSignupDTO.username;
+                    inputPasswordEl.value = '';
                     buttonSubmit.disabled = 'true';
                 }
             );

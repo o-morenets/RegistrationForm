@@ -28,7 +28,7 @@ angular.module("login_form", [])
                     resultMessageLabel.style.color = 'red';
                     $scope.message = error.data.message;
                     inputEmailEl.style.color = 'red';
-                    inputEmailEl.value = error.data.userLoginDTO.email;
+                    inputEmailEl.value = error.data.userLoginDTO.username;
                     inputPasswordEl.value = '';
                     buttonSubmit.disabled = 'true';
                 }

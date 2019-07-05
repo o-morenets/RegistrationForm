@@ -1,17 +1,14 @@
 package ua.testing.demo_jpa.dto;
 
 import lombok.*;
-import ua.testing.demo_jpa.entity.RoleType;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
 public class UserSignupDTO {
+    private String username;
+    private String password;
     private String firstName;
     private String lastName;
-    private String email;
-    private RoleType role;
 }
