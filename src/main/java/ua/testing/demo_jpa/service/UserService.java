@@ -11,7 +11,7 @@ import ua.testing.demo_jpa.dto.UsersDTO;
 import ua.testing.demo_jpa.entity.Role;
 import ua.testing.demo_jpa.entity.User;
 import ua.testing.demo_jpa.exception.NotUniqueLoginException;
-import ua.testing.demo_jpa.repository.AccountRepository;
+import ua.testing.demo_jpa.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -22,27 +22,26 @@ public class UserService {
 
     private static final int SQL_CONSTRAINT_NOT_UNIQUE = 1062;
 
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
 
-    public UserService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public UsersDTO getAllUsers() {
-        return new UsersDTO(accountRepository.findAll());
+        return new UsersDTO(userRepository.findAll());
     }
 
     public Optional<User> login(UserLoginDTO userLoginDTO) {
-        User user = accountRepository.findByUsername(userLoginDTO.getUsername());
+        User user = userRepository.findByUsername(userLoginDTO.getUsername());
         return Optional.of(user);
     }
 
     public void saveNewUser(UserSignupDTO userSignupDTO) {
-        String encryptedPassword = new BCryptPasswordEncoder().encode(userSignupDTO.getPassword());
         User user = User.builder()
                 .username(userSignupDTO.getUsername())
-                .password(encryptedPassword)
-                .authorities(ImmutableList.of(Role.of("ROLE_USER")))
+                .password(new BCryptPasswordEncoder().encode(userSignupDTO.getPassword()))
+                .authorities(ImmutableList.of(Role.ROLE_USER))
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
@@ -52,7 +51,7 @@ public class UserService {
                 .build();
 
         try {
-            accountRepository.save(user);
+            userRepository.save(user);
         } catch (Exception ex) {
             int errorCode = 0;
 

@@ -10,11 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.testing.demo_jpa.entity.User;
-import ua.testing.demo_jpa.persistence.RoleDAO;
-import ua.testing.demo_jpa.persistence.UserDAO;
+import ua.testing.demo_jpa.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,29 +20,22 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private RoleDAO roleDAO;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = this.userDAO.findByEmail(username);
+        User user = userRepository.findByUsername(username);
 
-        if (!userOptional.isPresent()) {
+        if (user == null) {
             log.warn("User not found! " + username);
             throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
 
-        User user = userOptional.get();
-
         log.info("Found User: " + user);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.roleDAO.getRoleNames(user.getUserId());
-
-        List<GrantedAuthority> grantList = roleNames.stream()
-                .map(SimpleGrantedAuthority::new)
+        List<GrantedAuthority> grantList = user.getAuthorities().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(

@@ -26,7 +26,7 @@
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
-                            <th>Role</th>
+                            <th>Roles</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,7 +35,7 @@
                             <td>{{u.firstName}}</td>
                             <td>{{u.lastName}}</td>
                             <td>{{u.username}}</td>
-                            <td>{{u.role}}</td>
+                            <td>{{u.authorities}}</td>
                         </tr>
                         </tbody>
                     </table>

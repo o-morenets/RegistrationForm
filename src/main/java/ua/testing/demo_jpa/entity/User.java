@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(name = "APP_USER_UK", columnNames = "email")})
 public class User implements UserDetails {
@@ -22,7 +21,10 @@ public class User implements UserDetails {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Transient
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name ="user_role" , joinColumns=@JoinColumn(name="user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_name")
     private Collection<Role> authorities;
 
     @Column(length = 128, nullable = false)
