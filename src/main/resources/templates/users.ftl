@@ -9,13 +9,10 @@
 </head>
 
 <body ng-app="users_form" ng-controller="UserCtrl" data-ng-init="getUsers()">
-
-<!-- Include _menu.ftl -->
-<#include "_menu.ftl">
-
 <div class="container" style="margin-top: 30px">
     <div class="row">
         <div class="col-md-12">
+            <#include "parts/lang.ftl">
             <div class="panel panel-default">
                 <div class="panel-heading">Users</div>
                 <div class="panel-body">

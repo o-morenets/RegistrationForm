@@ -24,21 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-		/*
-		 Setting Service to find User in the database.
-		 And Setting PasswordEncoder
-		*/
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable();
 
         /* The pages does not require login */
@@ -50,11 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		 If no login, it will redirect to /login page.
 		*/
         http.authorizeRequests()
-                .antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+                .antMatchers("/userInfo")
+                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
         /* For ADMIN only. */
         http.authorizeRequests()
-                .antMatchers("/allUsers").access("hasRole('ROLE_ADMIN')");
+                .antMatchers("/allUsers")
+                .access("hasRole('ROLE_ADMIN')");
 
 		/*
 		 When the user has logged in as XX.
@@ -70,18 +59,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // Submit URL of login page.
 //                .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login")
-                .failureUrl("/login?error=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
+//                .loginPage("/login")
 
                 // Config for Logout Page
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout");
 
         /* Config Remember Me. */
-        http.authorizeRequests().and()
+        http.authorizeRequests()
+                .and()
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(5 * 60); // 5 min
+                .tokenValiditySeconds(20 * 60); // 20 min
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+		/*
+		 Setting Service to find User in the database.
+		 And Setting PasswordEncoder
+		*/
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean

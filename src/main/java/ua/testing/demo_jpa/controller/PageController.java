@@ -14,7 +14,7 @@ import java.security.Principal;
 @Controller
 public class PageController {
 
-    @RequestMapping(value = {"/", "/welcome"})
+    @RequestMapping("/")
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "This is welcome page!");
@@ -30,11 +30,6 @@ public class PageController {
         model.addAttribute("logout", logout != null);
 
         return "login";
-    }
-
-    @RequestMapping(value = "/logoutSuccessful")
-    public String logoutSuccessfulPage(Model model) {
-        return "logoutSuccessfulPage";
     }
 
     @RequestMapping("/signup")
