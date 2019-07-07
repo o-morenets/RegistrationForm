@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Registration form's Main</title>
@@ -16,7 +16,7 @@
 <#include "_menu.ftl">
 
 <div class="col-md-8 col-md-offset-2">
-    <h1>Registration form's Main</h1>
+    <h1 th:text="#{regForm}"></h1>
 </div>
 <div class="container" style="margin-top: 60px">
     <div class="row">

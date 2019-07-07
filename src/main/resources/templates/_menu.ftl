@@ -3,4 +3,3 @@
 	&nbsp;|&nbsp;
 	<a href="?lang=uk">UKR</a>
 </div>
-

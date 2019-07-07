@@ -19,14 +19,12 @@ angular.module("login_form", [])
             }).then(
                 (response) => {
                     resultMessageLabel.style.color = 'green';
-                    $scope.message = "Access granted";
                     inputEmailEl.value = '';
                     inputPasswordEl.value = '';
                     buttonSubmit.disabled = 'true';
                 },
                 (error) => {
                     resultMessageLabel.style.color = 'red';
-                    $scope.message = error.data.message;
                     inputEmailEl.style.color = 'red';
                     inputEmailEl.value = error.data.userLoginDTO.username;
                     inputPasswordEl.value = '';

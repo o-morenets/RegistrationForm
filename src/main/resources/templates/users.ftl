@@ -31,7 +31,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="u in users">
-                            <td>{{u.id}}</td>
+                            <td>{{u.userId}}</td>
                             <td>{{u.firstName}}</td>
                             <td>{{u.lastName}}</td>
                             <td>{{u.username}}</td>
