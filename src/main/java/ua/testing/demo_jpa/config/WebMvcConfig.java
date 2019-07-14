@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -19,9 +20,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	
     @Bean(name = "localeResolver")
     public LocaleResolver getLocaleResolver() {
-        CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setCookieDomain("myAppLocaleCookie");
-        resolver.setCookieMaxAge(60 * 60); // 60 minutes
+//        CookieLocaleResolver resolver = new CookieLocaleResolver();
+//        resolver.setCookieDomain("myAppLocaleCookie");
+//        resolver.setCookieMaxAge(60 * 60); // 60 minutes
+        SessionLocaleResolver resolver = new SessionLocaleResolver();
         return resolver;
     }
 

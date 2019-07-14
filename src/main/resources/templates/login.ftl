@@ -1,24 +1,23 @@
-<!DOCTYPE html>
 <#import "/spring.ftl" as s/>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><@s.message "login.title"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 </head>
 
-<body ng-app="login_form" ng-controller="AppCtrl">
+<body>
 
 <div class="container">
     <#include "parts/lang.ftl">
+    <#include "parts/menu.ftl">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="panel panel-default"
-            ">
+            <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title"><@s.message "login.panel.title"/></h4>
             </div>
@@ -47,8 +46,7 @@
                                placeholder="<@s.message "login.panel.email"/>"
                                required
                                autofocus
-                               name="username"
-                               ng-model="auth.username">
+                               name="username">
                     </div>
                     <div class="form-group">
                         <label id="inputPasswordLabel"
@@ -58,8 +56,7 @@
                                id="inputPasswordEl"
                                placeholder="<@s.message "login.panel.password"/>"
                                required
-                               name="password"
-                               ng-model="auth.password">
+                               name="password">
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-12">
@@ -83,19 +80,18 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button id="btnSubmit" type="submit" class="btn btn-success"
-                                    ng-disabled="form.$invalid">
+                            <button id="btnSubmit" type="submit" class="btn btn-success">
                                 <@s.message "login.panel.button.submit"/>
                             </button>
                         </div>
                     </div>
-                    <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                    <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden" />
                 </form>
             </div>
         </div>
     </div>
 </div>
 </div>
-<script type="text/javascript" src="/js/login.js"></script>
+<#--<script type="text/javascript" src="/js/login.js"></script>-->
 </body>
 </html>

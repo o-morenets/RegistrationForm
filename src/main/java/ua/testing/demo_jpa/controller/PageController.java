@@ -15,16 +15,14 @@ import java.security.Principal;
 public class PageController {
 
     @RequestMapping("/")
-    public String welcomePage(Model model) {
-        model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "This is welcome page!");
-        return "welcomePage";
+    public String welcomePage() {
+        return "welcome";
     }
 
     @RequestMapping("/login")
-    public String loginPage(@RequestParam(name = "error", required = false) String error,
-                            @RequestParam(name = "logout", required = false) String logout,
-                            Model model) {
+    public String login(@RequestParam(name = "error", required = false) String error,
+                        @RequestParam(name = "logout", required = false) String logout,
+                        Model model) {
 
         model.addAttribute("error", error != null);
         model.addAttribute("logout", logout != null);
@@ -33,8 +31,14 @@ public class PageController {
     }
 
     @RequestMapping("/signup")
-    public String signupForm() {
+    public String signup() {
         return "signup";
+    }
+
+    // Admin page only
+    @RequestMapping("/allUsers")
+    public String allUsers() {
+        return "allUsers";
     }
 
     // User page
@@ -43,13 +47,7 @@ public class PageController {
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         model.addAttribute("userInfo", loginedUser);
 
-        return "userInfoPage";
-    }
-
-    // Admin page only
-    @RequestMapping("/allUsers")
-    public String adminPage() {
-        return "users";
+        return "userInfo";
     }
 
     @RequestMapping(value = "/403")
@@ -58,6 +56,6 @@ public class PageController {
             String message = "Hi " + principal.getName() + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
         }
-        return "403Page";
+        return "403";
     }
 }

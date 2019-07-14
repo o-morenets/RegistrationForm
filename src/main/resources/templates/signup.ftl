@@ -14,11 +14,12 @@
 
 <div class="container">
     <#include "parts/lang.ftl">
+    <#include "parts/menu.ftl">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <div class="panel panel-default"">
-                <h3>{{message}}</h3>
+            <h3 id="resultMessage">{{message}}</h3>
                 <div class="panel-heading">
                     <h3 class="panel-title"><@s.message "signup.panel.title"/></h3>
                 </div>

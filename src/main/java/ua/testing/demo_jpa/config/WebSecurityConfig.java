@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,23 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
 
         /* The pages does not require login */
         http.authorizeRequests()
-                .antMatchers("/", "/login", "/signup").permitAll();
+                .antMatchers("/", "/signup").permitAll();
 
-		/*
-		 /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
-		 If no login, it will redirect to /login page.
-		*/
+        /* ROLE_USER */
         http.authorizeRequests()
-                .antMatchers("/userInfo")
+                .antMatchers(HttpMethod.GET, "/users/{userId}")
                 .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
-        /* For ADMIN only. */
+        /* ROLE_ADMIN */
         http.authorizeRequests()
-                .antMatchers("/allUsers")
+                .antMatchers("/users/*")
                 .access("hasRole('ROLE_ADMIN')");
 
 		/*
@@ -58,11 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin()
 
                 // Submit URL of login page.
-//                .loginProcessingUrl("/j_spring_security_check") // Submit URL
-//                .loginPage("/login")
+                .loginPage("/login")
 
                 // Config for Logout Page
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout");
+                .and().logout();
 
         /* Config Remember Me. */
         http.authorizeRequests()

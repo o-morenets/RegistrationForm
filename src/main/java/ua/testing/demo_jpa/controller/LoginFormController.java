@@ -24,6 +24,7 @@ public class LoginFormController {
         this.userService = userService;
     }
 
+/*
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void loginFormController(UserLoginDTO userLoginDTO) {
@@ -34,13 +35,16 @@ public class LoginFormController {
         Optional<User> user = userService.login(userLoginDTO);
         log.info("{}", "Logined user: " + user);
     }
+*/
 
+/*
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public UsersDTO getAllUsers() {
         UsersDTO allUsers = userService.getAllUsers();
         log.info("{}", allUsers);
         return allUsers;
     }
+*/
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity handleRuntimeException(RuntimeException ex) {
